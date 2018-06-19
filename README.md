@@ -1,4 +1,5 @@
 # MaterialsBase
+[![Build Status](https://travis-ci.com/bldamalla/MaterialsBase.jl.svg?branch=n-pt-stats)](https://travis-ci.com/bldamalla/MaterialsBase.jl)
 
 This Julia package will be created and used for materials analysis for my last high school research project.
 As such, code and documentation in this package are part of the research project.
