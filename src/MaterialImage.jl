@@ -1,7 +1,7 @@
 # this contains type definition for MaterialImage objects
 
 import Base: eltype, size, length, unique
-import Base: +, /, mean, ==, !=, normalize, normalize!
+import Base: +, /, mean, ==, !=, normalize!
 
 """
 MaterialImage
@@ -34,3 +34,42 @@ length(img::MaterialImage) = prod(size(img))
 unique(img::MaterialImage) = img.discs
 eltype(img::MaterialImage) = eltype(img.states)
 segmented(img::MaterialImage) = (unique(img) == unique(img.states))
+
+# math operations
+function normalize!(img::MaterialImage)
+  mn = minimum(img.states)
+  for i=1:length(img)
+    img.states[i] = img.states[i] - mn
+  end
+  mx = maximum(img.states)
+  for i=1:length(img.states)
+    img.states[i] = img.states ./ mx
+  end
+  return nothing
+end
+normal(img::MaterialImage) = (maximum(img.states) == 1.0 & minimum(img.states) == 0.0)
+
+==(img1::MaterialImage, img2::MaterialImage) = ((img1.dims == img2.dims) & (img1.discs == img2.discs))
+!=(img1::MaterialImage, img2::MaterialImage) = !(img1 == img2)
++(img1::MaterialImage, img2::MaterialImage) = begin
+  if img1 != img2
+    throw(InexactError())
+  end
+  normalize!(img1); normalize!(img2)
+  return MaterialImage(img1.states + img2.states, img1.dims, img1.discs)
+end
+/(img::MaterialImage, N::Int) = begin
+  for i=1:length(img)
+    img.states[i] = img.states[i] / N
+  end
+end
+mean(ens::Vector{MaterialImage}) = begin
+  ret = reduce(+, ens)
+  ret = ret / length(ens)
+  return ret
+end
+function normal_mean(ens::Vector{MaterialImage})
+  ret = mean(ens)
+  normalize!(ret)
+  return ret
+end
