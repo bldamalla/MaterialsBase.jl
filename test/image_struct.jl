@@ -10,7 +10,7 @@ end
   # test if an image is properly produced
   @testset "Proper images" begin
     @testset "20 x 50 noise non-normal" begin
-      @test img = MaterialImage(rand(1000), (20, 50))
+      img = MaterialImage(rand(1000), (20, 50))
       @test size(img) == (20, 50)
       @test length(img) == 1000
       @test unique(img) == 2
@@ -19,7 +19,7 @@ end
     end
 
     @testset "20 x 50 noise 3 discs non-normal" begin
-      @test img = MaterialImage(rand(1000), (20, 50), 3)
+      img = MaterialImage(rand(1000), (20, 50), 3)
       @test size(img) == (20, 50)
       @test length(img) == 1000
       @test unique(img) == 3
@@ -28,7 +28,7 @@ end
     end
 
     @testset "25 x 40 noise 5 discs normal" begin
-      @test img = MaterialImage(rand(linspace(0.0, 1.0, 4), 25, 40), 5)
+      img = MaterialImage(rand(linspace(0.0, 1.0, 4), 25, 40), 5)
       @test size(img) == (25, 40)
       @test length(img) == 1000
       @test unique(img) == 4
