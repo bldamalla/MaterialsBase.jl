@@ -8,5 +8,5 @@ end
 # write your own tests here
 @testset "MaterialsBase" begin
   # test structure basic functions
-  include("MaterialsBase.jl")
+  include("image_struct.jl")
 end
