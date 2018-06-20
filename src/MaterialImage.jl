@@ -26,7 +26,7 @@ MaterialImage(img::Vector{T<:AbstractFloat}, dims::Tuple{Int,Int}, discs=2::Int)
   if discs < 2
     throw(InitError())
   end
-  return MaterialImage(img, dims, discs)
+  return MaterialImage(img, dims, min(discs, unique(img)))
 end
 MaterialImage(img::Array{T<:AbstractFloat, 2}, discs::Int) = MaterialImage(reshape(img, length(img), 1), size(img), discs)
 size(img::MaterialImage) = img.dims
