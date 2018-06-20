@@ -10,7 +10,7 @@ end
   # test if an image is properly produced
   @testset "Proper images" begin
     @testset "20 x 50 noise non-normal" begin
-      img = MaterialImage(rand(1000), (20, 50))
+      img = matimage(rand(1000), (20, 50))
       @test size(img) == (20, 50)
       @test length(img) == 1000
       @test unique(img) == 2
@@ -19,7 +19,7 @@ end
     end
 
     @testset "20 x 50 noise 3 discs non-normal" begin
-      img = MaterialImage(rand(1000), (20, 50), 3)
+      img = matimage(rand(1000), (20, 50), 3)
       @test size(img) == (20, 50)
       @test length(img) == 1000
       @test unique(img) == 3
@@ -28,19 +28,20 @@ end
     end
 
     @testset "25 x 40 noise 5 discs normal" begin
-      img = MaterialImage(rand(linspace(0.0, 1.0, 4), 25, 40), 5)
+      img = matimage(rand(linspace(0.0, 1.0, 4), 25, 40), 5)
       @test size(img) == (25, 40)
       @test length(img) == 1000
       @test unique(img) == 4
       @test eltype(img) <: AbstractFloat
       @test segmented(img) == true
+      @test normal(img) == true
     end
   end
 
   # test if proper errors are thrown
   @testset "Improper images" begin
-    @test_throws InitError img = MaterialImage(rand(1000), (20, 51), 2)
-    @test_throws InitError img = MaterialImage(randn(1000), (20, 50), 2)
+    @test_throws InexactError img = matimage(rand(1000), (20, 51), 2)
+    @test_throws ArgumentError img = matimage(randn(1000), (20, 50), 2)
   end
 
   # test for equality for math operations
