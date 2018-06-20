@@ -1,5 +1,5 @@
 module MaterialsBase
 
-# package code goes here
+export MaterialImage
 
 end # module

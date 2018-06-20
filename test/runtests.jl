@@ -6,4 +6,7 @@ else
 end
 
 # write your own tests here
-@test 1 == 1
+@testset "MaterialsBase" begin
+  # test structure basic functions
+  include("MaterialsBase.jl")
+end
