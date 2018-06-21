@@ -42,10 +42,31 @@ end
   @testset "Improper images" begin
     @test_throws InexactError img = matimage(rand(1000), (20, 51), 2)
     @test_throws ArgumentError img = matimage(randn(1000), (20, 50), 2)
+    @test_throws ArgumentError img = matimage(rand(1000), (20, 50), 1)
   end
 
   # test for equality for math operations
-
-  # test if errors are thrown when necessary
-
+  @testset "Math Operations" begin
+    @testset "Comparison Operators" begin
+      @test matimage(rand(1000), (25, 40)) == matimage(rand(1000), (25, 40), 2)
+      @test matimage(rand(1000), (25, 40)) != matimage(rand(1000), (25, 40), 3)
+      @test matimage(rand(1000), (25, 40)) != matimage(rand(1000), (20, 50))
+    end
+    @testset "Compute Operators" begin
+      case_mat = [1.0 2.0 3.0 2.0 1.0;
+                  3.0 2.0 1.0 2.0 3.0]
+      case_trans = transpose(case_mat)
+      case_norm = [0.0 0.5 1.0 0.5 0.0;
+                   1.0 0.5 0.0 0.5 1.0]
+      A = matimage(case_mat, 3)
+      ens_pass = [matimage(case_mat, 3), matimage(case_mat, 3), matimage(case_norm, 3), matimage(case_norm, 3)]
+      ens_fail = [matimage(case_trans, 3), matimage(case_mat, 3), matimage(case_trans, 3), matimage(case_norm, 3)]
+      @test begin normalize!(A); normal(A) end
+      @test begin normalize!(A); (A == matimage(case_norm, 3)) & (A.states == vec(case_norm)) end
+      @test_throws InexactError matimage(case_trans, 3) + matimage(case_mat, 3)
+      @test (matimage(case_norm, 3) + matimage(case_norm, 3)) == (matimage(case_mat, 3) + matimage(case_mat, 3))
+      @test normal(normal_mean(ens_pass)) == true
+      @test_throws InexactError mean(ens_fail)
+    end
+  end
 end

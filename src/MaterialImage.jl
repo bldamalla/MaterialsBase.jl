@@ -1,7 +1,7 @@
 # this contains type definition for MaterialImage objects
 
 import Base: eltype, size, length, unique
-import Base: +, /, mean, ==, !=, normalize!
+import Base: +, /, mean, ==, ===, !=, normalize!
 
 """
 MaterialImage
@@ -39,7 +39,7 @@ function normalize!(img::MaterialImage)
   end
   mx = maximum(img.states)
   for i=1:length(img.states)
-    img.states[i] = img.states ./ mx
+    img.states[i] = img.states[i] ./ mx
   end
   return nothing
 end
@@ -61,7 +61,7 @@ end
 end
 mean(ens::Vector{MaterialImage}) = begin
   ret = reduce(+, ens)
-  ret = ret / length(ens)
+  ret / length(ens)
   return ret
 end
 function normal_mean(ens::Vector{MaterialImage})
