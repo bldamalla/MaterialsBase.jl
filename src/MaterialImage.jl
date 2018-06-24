@@ -1,7 +1,7 @@
 # this contains type definition for MaterialImage objects
 
 import Base: eltype, size, length, unique
-import Base: +, /, mean, ==, ===, !=, normalize!
+import Base: +, /, mean, ==, !=, normalize!
 
 """
 MaterialImage
