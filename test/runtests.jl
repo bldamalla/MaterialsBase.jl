@@ -9,4 +9,6 @@ end
 @testset "MaterialsBase" begin
   # test structure basic functions
   include("image_struct.jl")
+  # add segmentation functions
+  include("segment.jl")
 end
