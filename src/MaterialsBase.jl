@@ -6,4 +6,6 @@ export ==, !=, +, /, mean, normalize!, normal_mean
 
 include("MaterialImage.jl")
 
+include("segment.jl")
+
 end # module
