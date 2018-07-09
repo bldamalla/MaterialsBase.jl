@@ -21,5 +21,13 @@ end
       @test 1 <= thresh <= 256
       @test_throws ArgumentError otsu_thresh(matimage(rand(250, 400), 3))
     end
+    @testset "Segment" begin
+      img_ = matimage(rand(250, 400), 3)
+      img = matimage(rand(250, 400), 2)
+      segment!(img)
+      @test_throws ArgumentError segment!(img_)
+      @test normal(img)
+      @test segmented(img)
+    end
   end
 end

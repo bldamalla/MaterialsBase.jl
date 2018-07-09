@@ -39,3 +39,13 @@ function subrange(hist::FrequencyWeights, bounds::Int...)
     return bounds[2]
   end
 end
+
+function segment!(img::MaterialImage)
+  unique(img) == 2 || throw(ArgumentError("Segmentation to number of unique states is not supported"))
+  normalize!(img)
+  thresh = (otsu_thresh(img)-1)/255
+  for i=1:length(img)
+    @inbounds img.states[i] = ceil(img.states[i]-thresh)
+  end
+  return nothing
+end
